@@ -42,6 +42,19 @@
   top: calc(50% - 19px);
 }
 
+@media (max-width: 700px) {
+  .parallax-container a {
+    top: unset;
+    bottom: -70%;
+  }
+  .parallax-container .parallax {
+    height: 10em;
+  }
+  .parallax-container .content {
+    margin-top: -1em;
+  }
+}
+
 /* Custom CSS for Docs */
 #docs-index h5 {
   font-family: monospace;
@@ -115,4 +128,14 @@ code.js.hljs.javascript::before {
   -ms-transition: opacity 350ms ease;
   -moz-transition: opacity 350ms ease;
   -o-transition: opacity 350ms ease;
+}
+
+@media (max-width: 550px) {
+  #docs-index .permalink:after {
+    margin-left: -35px;
+    padding-right: 1em;
+    position: absolute;
+    right: 0;
+    margin-top: .2em;
+  }
 }
