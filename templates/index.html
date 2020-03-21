@@ -10,8 +10,10 @@
     <link rel="icon" type="image/png" href="/assets/images/icon.png">
     <meta content="{{ metadata.title or 'New HotImage Instance' }}" property="og:title" />
 
-    <meta content="{{ metadata.description }}" property="og:description" />
-    <meta content="{{ metadata.description }}" name="description" />
+    {% if metadata.description %}
+      <meta content="{{ metadata.description }}" property="og:description" />
+      <meta content="{{ metadata.description }}" name="description" />
+    {% endif %}
 
     <meta name="revisit-after" content="2 days">
 
@@ -54,7 +56,10 @@
         <div class="container">
           <section class="me">
             <h1 class="title">🎴 {{ metadata.title or "New HotImage" }}</h1>
-            <p class="undertitle">{{ metadata.description }}<br><i>Loaded with <b>{{ cat_count }}</b> categories and <b>{{ image_count }}</b> images.</i></p>
+            <p class="undertitle">
+              {% if metadata.description %}
+                {{ metadata.description }}<br>
+              {% endif %}<i>Loaded with <b>{{ cat_count }}</b> categories and <b>{{ image_count }}</b> images.</i></p>
           </section>
           <div class="buttons">
             <a href="https://github.com/Snazzah/HotImage" class="btn github-dropshadow animation" target="_blank">GitHub Repository</a>

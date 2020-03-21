@@ -10,8 +10,10 @@
     <link rel="icon" type="image/png" href="/assets/images/icon.png">
     <meta content="{{ metadata.title or 'New HotImage Instance' }} — API Documentation" property="og:title" />
 
-    <meta content="{{ metadata.description }}" property="og:description" />
-    <meta content="{{ metadata.description }}" name="description" />
+    {% if metadata.description %}
+      <meta content="{{ metadata.description }}" property="og:description" />
+      <meta content="{{ metadata.description }}" name="description" />
+    {% endif %}
 
     <meta name="revisit-after" content="2 days">
 
