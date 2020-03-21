@@ -124,8 +124,12 @@
                   {% else %}
                     {{ key }}
                   {% endif %}
-                  
-                  <span class="label {{ cat_color(key) }} monospace">{{ key }}</span>
+
+                  {% if metadata.category_info and metadata.category_info[key] and metadata.category_info[key].text_color %}
+                    <span class="label {{ cat_color(key) }} {{ metadata.category_info[key].text_color }}-text monospace">{{ key }}</span>
+                  {% else %}
+                    <span class="label {{ cat_color(key) }} monospace">{{ key }}</span>
+                  {% endif %}
                   {% if metadata.category_info and metadata.category_info[key] and metadata.category_info[key].nsfw %}
                     <span class="label cubered">NSFW</span>
                   {% endif %}
