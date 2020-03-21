@@ -1,0 +1,21 @@
+{
+  "localhost": false,
+  "watcher": true,
+  "debug": true,
+  "domain": "https://example.com/",
+  "metadata": {
+    "title": "New HotImage",
+    "description": "Pipin' hot images!",
+    "category_info": {
+      "_coffee": {
+        "title": "Coffee!",
+        "description": "Start your day with a lovely coffee~",
+        "random_button_text": "Get some coffee!",
+        "color": "pumpkin"
+      }
+    }
+  },
+  "images_path": "images",
+  "ignore_patterns": [],
+  "port": 3302
+}

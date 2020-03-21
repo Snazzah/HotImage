@@ -1,0 +1,10 @@
+# Ignore all images
+images/*
+config.json
+
+# Image example whitelist
+!images/example_coffee
+
+# Standard ignore
+__pycache__/
+.ropeproject/

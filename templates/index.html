@@ -1,0 +1,156 @@
+<html>
+  <head>
+    <title>{{ metadata.title or 'New HotImage Instance' }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+    <!-- Meta Data -->
+    <meta name="theme-color" content="#e74c3c">
+    <meta content="{{ domain }}assets/images/icon.png" property="og:image" />
+    <link rel="icon" type="image/png" href="/assets/images/icon.png">
+    <meta content="{{ metadata.title or 'New HotImage Instance' }}" property="og:title" />
+
+    <meta content="{{ metadata.description }}" property="og:description" />
+    <meta content="{{ metadata.description }}" name="description" />
+
+    <meta name="revisit-after" content="2 days">
+
+    <meta property="og:locale" content="en_GB" />
+    <link rel="canonical" href="{{ domain }}" />
+    <meta property="og:url" content="{{ domain }}" />
+    <meta property="og:site_name" content="{{ metadata.title or 'New HotImage Instance' }}" />
+
+    <meta name="twitter:card" content="summary" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/icons/manifest.json">
+    <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+
+    <!-- CSS -->
+    <link href="https://modesta.alexflipnote.dev/css/modesta.css" type="text/css" rel="stylesheet">
+    <link href="assets/css/custom.css" type="text/css" rel="stylesheet">
+
+    <!-- JavaScript -->
+    <script src="assets/js/smoothscroll.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="assets/js/main.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+  <body class="github-font-standard">
+    <div class="fullscreen">
+      <div class="background" style="background-image: url('assets/images/background.jpg');"></div>
+      <div class="center-object">
+        <div class="container">
+          <section class="me">
+            <h1 class="title">🎴 {{ metadata.title or "New HotImage" }}</h1>
+            <p class="undertitle">{{ metadata.description }}<br><i>Loaded with <b>{{ cat_count }}</b> categories and <b>{{ image_count }}</b> images.</i></p>
+          </section>
+          <div class="buttons">
+            <a href="https://github.com/Snazzah/HotImage" class="btn github-dropshadow animation" target="_blank">GitHub Repository</a>
+            <a href="./docs" class="btn alizarin-dropshadow animation">Documenation</a>
+          </div>
+          <div class="buttons">
+            {% for button in metadata.fullscreen_buttons %}
+              {% if button.text_color %}
+                <a href="{{ button.url }}" class="btn {{ button.color }}-dropshadow {{ button.text_color }}-text animation" target="_blank">{{ button.title }}</a>
+              {% else %}
+                <a href="{{ button.url }}" class="btn {{ button.color }}-dropshadow animation" target="_blank">{{ button.title }}</a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <a href="#information"><div id="fade" class="arrow bounce">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 481.32 291.98" class="white-fill">
+          <path d="M466.5,15.5L466,15c-19.8-19.8-52-19.8-71.9,0L240.8,168.3L87.2,14.8C67.4-5,35.2-5,15.4,14.8l-0.5,0.5 C-5,35.2-5,67.4,14.8,87.2l186.6,186.6c0.9,1,1.8,2,2.7,3v0c3.8,3.8,8.1,6.9,12.7,9.3c17,9,38.1,7.7,53.9-3.9 c2.2-1.6,4.4-3.4,6.4-5.4L466.5,87.4C486.4,67.6,486.4,35.4,466.5,15.5z"/>
+        </svg>
+      </div></a>
+    </div>
+
+    <section class="container" id="information">
+      <div class="box-container">
+        <h3 class="title alizarin-text">About</h3>
+        <div class="info-container"><p>
+          <span class="alizarin-text">HotImage</span> is an easy-to-use app that can turn simple folders into an image API built from AlexFlipnote's <a href="https://github.com/AlexFlipnote/CoffeeAPI">CoffeeAPI</a>.<br>
+          This application uses <a href="https://pypi.org/project/Flask/">Flask</a> along with <a href="https://github.com/AlexFlipnote/ModestaCSS">Modesta</a> and <a href="https://github.com/alicelieutier/smoothScroll">smoothScroll</a> for the website.<br><br>
+          If you want to use this application's API, make sure to visit the <a href="./docs">API documentation</a>.
+        </p></div>
+      </div>
+
+      <div class="box-container">
+        <h3 class="title alizarin-text">Categories</h3>
+        <div class="info-container">
+          {% for key in categories %}
+            <section class="parallax-container">
+              {% if metadata.category_info and metadata.category_info[key] and metadata.category_info[key].show_bg == false %}
+                <div class="parallax"></div>
+              {% elif metadata.category_info and metadata.category_info[key] and metadata.category_info[key].bg %}
+                <div class="parallax" style="background-image: url('{{ metadata.category_info[key].bg }}')"></div>
+              {% else %}
+                <div class="parallax" style="background-image: url('./{{ key }}/{{ random(categories[key]) }}')"></div>
+              {% endif %}
+              <div class="content">
+                {% if metadata.category_info and metadata.category_info[key] and metadata.category_info[key].text_color %}
+                  <a href="./api/v1/{{ key }}/random" class="btn {{ cat_color(key) }}-dropshadow {{ metadata.category_info[key].text_color }}-text" target="_blank">
+                {% else %}
+                  <a href="./api/v1/{{ key }}/random" class="btn {{ cat_color(key) }}-dropshadow" target="_blank">
+                {% endif %}
+                  {% if metadata.category_info and metadata.category_info[key] %}
+                    {{ metadata.category_info[key].random_button_text }}
+                  {% else %}
+                    Random Image
+                  {% endif %}
+                </a>
+                <h6>
+                  {% if metadata.category_info and metadata.category_info[key] %}
+                    {{ metadata.category_info[key].title }}
+                  {% else %}
+                    {{ key }}
+                  {% endif %}
+                  
+                  <span class="label {{ cat_color(key) }} monospace">{{ key }}</span>
+                  {% if metadata.category_info and metadata.category_info[key] and metadata.category_info[key].nsfw %}
+                    <span class="label cubered">NSFW</span>
+                  {% endif %}
+                </h6>
+                {% if metadata.category_info and metadata.category_info[key] and metadata.category_info[key].description %}
+                  <p>{{ metadata.category_info[key].description }}</p>
+                {% endif %}
+              </div>
+            </section>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <footer class="center box-container primary no-border-radius">
+      <p class="no-margin">
+        <a href="https://github.com/Snazzah/HotImage/blob/master/LICENSE" target="_blank">LICENSE</a> |
+        <a href="https://github.com/Snazzah/HotImage" target="_blank">HotImage</a> v{{ version }} |
+        Created by <a href="https://snazzah.com" target="_blank">Snazzah</a>
+      </p>
+      {% if metadata.hosted_by and metadata.hosted_by.url %}
+      <p class="no-margin">
+        Hosted by <a href="{{ metadata.hosted_by.url }}" target="_blank">{{ metadata.hosted_by.name }}</a>
+      </p>
+      {% elif metadata.hosted_by %}
+      <p class="no-margin">
+        Hosted by {{ metadata.hosted_by.name }}
+      </p>
+      {% endif %}
+    </footer>
+
+  </body>
+</html>

@@ -1,0 +1,173 @@
+<html>
+  <head>
+    <title>{{ metadata.title or 'New HotImage Instance' }} — API Documentation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+    <!-- Meta Data -->
+    <meta name="theme-color" content="#e74c3c">
+    <meta content="{{ domain }}assets/images/icon.png" property="og:image" />
+    <link rel="icon" type="image/png" href="/assets/images/icon.png">
+    <meta content="{{ metadata.title or 'New HotImage Instance' }} — API Documentation" property="og:title" />
+
+    <meta content="{{ metadata.description }}" property="og:description" />
+    <meta content="{{ metadata.description }}" name="description" />
+
+    <meta name="revisit-after" content="2 days">
+
+    <meta property="og:locale" content="en_GB" />
+    <link rel="canonical" href="{{ domain }}" />
+    <meta property="og:url" content="{{ domain }}" />
+    <meta property="og:site_name" content="{{ metadata.title or 'New HotImage Instance' }} — API Documentation" />
+
+    <meta name="twitter:card" content="summary" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/icons/manifest.json">
+    <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+
+    <!-- CSS -->
+    <link href="https://modesta.alexflipnote.dev/css/modesta.css" type="text/css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/styles/tomorrow-night.min.css" type="text/css" rel="stylesheet">
+    <link href="assets/css/custom.css" type="text/css" rel="stylesheet">
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="assets/js/smoothscroll.min.js" type="text/javascript" charset="utf-8"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body class="github-font-standard">
+    <section class="container" id="docs-index">
+      <p class="center"><a href="../" class="btn alizarin-dropshadow hover-scale-inset">Back to Index</a></p>
+  
+      <div class="box-container" id="intro">
+        <h1 class="title alizarin-text">API Documentation</h1>
+        <div class="info-container"><p>
+          The API version of this instance is Version 1.<br>
+          The base URL of all endpoints is <code>{{ domain }}api/v1/</code>.<br><br>
+          The example JSON responses are not coming from the instance itself and may not have the same data.
+        </p></div>
+      </div>
+
+      <div class="box-container">
+        <h3 class="title alizarin-text" id="listing-images">Listing images</h3>
+
+        <h5 id="/list"><a href="#/list" class="permalink"></a><span class="label emerald monospace">GET</span>/list</h5>
+        Fetches a list of all the categories along with all of the filenames.
+        <pre><code class="js">
+  // {{ domain }}api/v1/list
+
+  {
+    "categories": {
+      "example_coffee": {
+        "count": 6,
+        "files": [
+          "4GI-0z5K2i4_coffee.jpg",
+          "bTzk95h707g_coffee.jpg",
+          "hgjpLGClejo_coffee.jpg",
+          "QDTtF7ewaak_coffee.jpg",
+          "VwZyfdlvUWw_coffee.jpg",
+          "_JOiT2NsV1A_coffee.jpg"
+        ]
+      },
+      ...
+    },
+    "category_keys": [
+      "example_coffee",
+      ...
+    ]
+    "count": 4,
+    "image_count": 10
+  }
+        </code></pre>
+
+        <h5 id="/:category/list"><a href="#/:category/list" class="permalink"></a><span class="label emerald monospace">GET</span>/:category/list</h5>
+        Fetches a list of filenames within a category.
+        <pre><code class="js">
+  // {{ domain }}api/v1/example_coffee/list
+        
+  {
+    "count": 6,
+    "files": [
+      "4GI-0z5K2i4_coffee.jpg",
+      "bTzk95h707g_coffee.jpg",
+      "hgjpLGClejo_coffee.jpg",
+      "QDTtF7ewaak_coffee.jpg",
+      "VwZyfdlvUWw_coffee.jpg",
+      "_JOiT2NsV1A_coffee.jpg"
+    ]
+  }
+        </code></pre>
+      </div>
+
+      <div class="box-container">
+        <h3 class="title alizarin-text" id="getting-images">Getting random images</h3>
+
+        <h5 id="/random"><a href="#/random" class="permalink"></a><span class="label emerald monospace">GET</span>/random</h5>
+        Redirects you to a random image in the instance.
+
+        <h5 id="/random.json"><a href="#/random.json" class="permalink"></a><span class="label emerald monospace" id="/random.json">GET</span>/random.json</h5>
+        Fetches a random image in the instance.
+        <pre><code class="js">
+  // {{ domain }}api/v1/random.json
+        
+  {
+    "category": "example_coffee",
+    "filename": "QDTtF7ewaak_coffee.jpg",
+    "url": "{{ domain }}example_coffee/QDTtF7ewaak_coffee.jpg"
+  }
+        </code></pre>
+      </div>
+
+      <div class="box-container">
+        <h3 class="title alizarin-text" id="getting-images-from-category">Getting random images from a category</h3>
+
+        <h5 id="/:category/random"><a href="#/:category/random" class="permalink"></a><span class="label emerald monospace">GET</span>/:category/random</h5>
+        Redirects you to a random image in the instance.
+
+        <h5 id="/:category/random.json"><a href="#/:category/random.json" class="permalink"></a><span class="label emerald monospace">GET</span>/:category/random.json</h5>
+        Fetches a random image in the instance.
+        <pre><code class="js">
+  // {{ domain }}api/v1/example_coffee/random.json
+        
+  {
+    "category": "example_coffee",
+    "filename": "bTzk95h707g_coffee.jpg",
+    "url": "{{ domain }}example_coffee/bTzk95h707g_coffee.jpg"
+  }
+        </code></pre>
+      </div>
+    </section>
+
+    <footer class="center box-container primary no-border-radius">
+      <p class="no-margin">
+        <a href="https://github.com/Snazzah/HotImage/blob/master/LICENSE" target="_blank">LICENSE</a> |
+        <a href="https://github.com/Snazzah/HotImage" target="_blank">HotImage</a> v{{ version }} |
+        Created by <a href="https://snazzah.com" target="_blank">Snazzah</a>
+      </p>
+      {% if metadata.hosted_by and metadata.hosted_by.url %}
+      <p class="no-margin">
+        Hosted by <a href="{{ metadata.hosted_by.url }}" target="_blank">{{ metadata.hosted_by.name }}</a>
+      </p>
+      {% elif metadata.hosted_by %}
+      <p class="no-margin">
+        Hosted by {{ metadata.hosted_by.name }}
+      </p>
+      {% endif %}
+    </footer>
+
+  </body>
+</html>
