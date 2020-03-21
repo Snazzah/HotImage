@@ -1,4 +1,5 @@
 import os
+import time
 import logging
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -52,6 +53,7 @@ class ConfigObserveEventHandler(FileSystemEventHandler):
     def __init__(self, instance):
         super(ConfigObserveEventHandler, self).__init__()
         self._instance = instance
+        self._checking_filesize = False
 
     def on_moved(self, event):
         if event.src_path == './config.json':
@@ -71,8 +73,19 @@ class ConfigObserveEventHandler(FileSystemEventHandler):
 
     def on_modified(self, event):
         if event.src_path == './config.json':
-            log.debug('config.json was modified. Reloading config...')
+            log.debug('config.json was modified.')
             self._instance.config = self._instance._load_config()
+            
+            if not self._checking_filesize:
+                log.info('Detected change in config.json, Waiting for configuation to finish loading...')
+                self._checking_filesize = True
+                file_size = -1
+                while file_size != os.path.getsize('./config.json'):
+                    file_size = os.path.getsize('./config.json')
+                    time.sleep(1)
+                self._checking_filesize = False
+                log.info('config.json finished loading. Reloading config...')
+                self._instance.config = self._instance._load_config()
 
 def observe_config(instance):
     observer = Observer()
