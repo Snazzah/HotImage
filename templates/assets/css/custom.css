@@ -65,7 +65,7 @@
   margin-top: 1em;
 }
 
-#docs-index #intro code {
+#docs-index code {
   padding: .1em .5em;
   background-color: #fff2;
   border-radius: 5px;
@@ -112,7 +112,12 @@ code.js.hljs.javascript::before {
   -o-transition: opacity 350ms ease;
 }
 
-#docs-index h5:hover .permalink:after {
+#docs-index h3 .permalink:after {
+  vertical-align: 0em;
+}
+
+#docs-index h5:hover .permalink:after,
+#docs-index h3:hover .permalink:after {
   opacity: .4;
   transition: opacity 350ms ease;
   -webkit-transition: opacity 350ms ease;
@@ -121,7 +126,8 @@ code.js.hljs.javascript::before {
   -o-transition: opacity 350ms ease;
 }
 
-#docs-index h5 .permalink:hover:after {
+#docs-index h5 .permalink:hover:after,
+#docs-index h3 .permalink:hover:after {
   opacity: .6;
   transition: opacity 350ms ease;
   -webkit-transition: opacity 350ms ease;
