@@ -2,7 +2,7 @@
 
 <div align="center">
 
-# 🎴 HotImage
+# HotImage
 Easy-to-use application that turns folders into image API built from AlexFlipnote's [CoffeeAPI](https://github.com/AlexFlipnote/CoffeeAPI).
 
 </div>
