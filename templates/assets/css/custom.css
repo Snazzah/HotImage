@@ -145,3 +145,11 @@ code.js.hljs.javascript::before {
     margin-top: .2em;
   }
 }
+
+#docs-index .badge-table {
+  font-family: monospace;
+}
+
+#docs-index .badge-table td:nth-child(1) {
+  font-weight: bold;
+}
