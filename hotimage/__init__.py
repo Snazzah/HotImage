@@ -5,10 +5,8 @@ import logging
 import json
 
 from collections import namedtuple
-from flask import Flask, jsonify, send_from_directory, abort, redirect, render_template, request
+from flask import Flask, jsonify, send_from_directory, abort, redirect, render_template
 from pathtools.patterns import match_any_paths
-from urllib.parse import urlencode as queryparse
-from urllib.parse import urlparse
 from .watcher import observe_images, observe_config
 
 __version__ = '1.1.0'
