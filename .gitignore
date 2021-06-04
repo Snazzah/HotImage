@@ -8,3 +8,4 @@ config.json
 # Standard ignore
 __pycache__/
 .ropeproject/
+.vscode/**/*

@@ -32,9 +32,14 @@ class HotImage:
         self.app.route('/api/v1/list')(self._list)
         self.app.route('/api/v1/<path:category>/list')(self._list_cat)
 
-        self.app.route('/badge/image_count')(self._badge_image_count)
-        self.app.route('/badge/category_count')(self._badge_category_count)
-        self.app.route('/badge/<path:category>/image_count')(self._badge_image_count_in_cat)
+        self.app.route('/badge/v2/version')(self._badge_version)
+        self.app.route('/badge/v2/images')(self._badge_images)
+        self.app.route('/badge/v2/categories')(self._badge_categories)
+        self.app.route('/badge/v2/<path:category>/images')(self._badge_category_images)
+
+        self.app.route('/badge/image_count')(self._old_badge_images)
+        self.app.route('/badge/category_count')(self._old_badge_categories)
+        self.app.route('/badge/<path:category>/image_count')(self._old_badge_category_images)
 
         self._load_images()
         if self.config.watcher:
@@ -118,11 +123,17 @@ class HotImage:
 
     def _docs(self):
         metadata = self.config.metadata if hasattr(self.config, 'metadata') else {}
+        random_cat = random.choice(list(self.images.keys()))
 
         return render_template(
             'docs.html', metadata=metadata, domain=self.domain(),
-            categories=self.images, random=random.choice, random_cat=random.choice(list(self.images.keys())),
-            version=__version__
+            categories=self.images, random=random.choice, random_cat=random_cat,
+            version=__version__, badges=[
+                { "title": 'Version', "path": 'version' },
+                { "title": 'Image Count', "path": 'images' },
+                { "title": 'Category Count', "path": 'categories' },
+                { "title": 'Image Count in a Category', "path": f"{random_cat}/images" }
+            ]
         )
 
     def _assets(self, filename):
@@ -180,34 +191,50 @@ class HotImage:
     BADGE_LOGO_SVG = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNiAzNiI PHBhdGggZmlsbD0iI0ZGRjUiIGQ9Ik0zMiAyOEg0VjRjMC0yLjIwOSAxLjc5MS00IDQtNGgyMGMyLjIwOSAwIDQgMS43OTEgNCA0djI0eiIvPjxwYXRoIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0iI0ZGRiIgZD0iTTggMzZoMjBjMi4yMDkgMCA0LTEuNzkxIDQtNHYtNGMtNC4xMTctMi43NDQtMjEuMTM5LTguMjMzLTI4IDB2NGMwIDIuMjA5IDEuNzkxIDQgNCA0eiIvPjxjaXJjbGUgZmlsbD0iI0ZGRiIgY3g9IjE1LjI3NiIgY3k9IjEyLjQ5NSIgcj0iNy41NzgiLz48L3N2Zz4="
     BADGE_COLOR_LOGO_SVG = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNiAzNiI+PHBhdGggZmlsbD0iI0REMkU0NCIgZD0iTTMyIDI4SDRWNGMwLTIuMjA5IDEuNzkxLTQgNC00aDIwYzIuMjA5IDAgNCAxLjc5MSA0IDR2MjR6Ii8+PHBhdGggZD0iTTggMzZoMjBjMi4yMDkgMCA0LTEuNzkxIDQtNHYtNGMtNC4xMTctMi43NDQtMjEuMTM5LTguMjMzLTI4IDB2NGMwIDIuMjA5IDEuNzkxIDQgNCA0eiIvPjxjaXJjbGUgZmlsbD0iI0ZGRiIgY3g9IjE1LjI3NiIgY3k9IjEyLjQ5NSIgcj0iNy41NzgiLz48L3N2Zz4="
 
-    def __send_badge(self, label='<label>', message='<message>', color='e74c3c'):
-        query = {
-            "label": label,
-            "message": message,
-            "color": color
-        }
+    def _badge_version(self):
+        return jsonify({
+            "label": "version",
+            "message": __version__,
+            "color": "e74c3c",
+            "logoSvg": self.BADGE_LOGO_SVG
+        })
 
-        if request.args.get('logo') != None:
-            query['logo'] = self.BADGE_COLOR_LOGO_SVG if request.args.get('style') == 'social' else self.BADGE_LOGO_SVG
-        if request.args.get('domain') != None:
-            query['label'] = f"{urlparse(self.config.domain).hostname} — {label}"
-        if request.args.get('color') != None:
-            query['color'] = request.args.get('color')
-        if request.args.get('style') != None:
-            query['style'] = request.args.get('style')
-        
-        return redirect(f'https://img.shields.io/static/v1?{queryparse(query)}')
+    def _badge_images(self):
+        return jsonify({
+            "label": "images",
+            "message": str(self.image_count()),
+            "color": "e74c3c",
+            "logoSvg": self.BADGE_LOGO_SVG
+        })
 
-    def __send_error_badge(self, label='<label>', message='error'):
-        return self.__send_badge(label=label, message=message, color='e05d44')
+    def _badge_categories(self):
+        return jsonify({
+            "label": "categories",
+            "message": str(len(self.images)),
+            "color": "e74c3c",
+            "logoSvg": self.BADGE_LOGO_SVG
+        })
 
-    def _badge_image_count(self):
-        return self.__send_badge(label="images", message=self.image_count())
-
-    def _badge_category_count(self):
-        return self.__send_badge(label="categories", message=len(self.images))
-
-    def _badge_image_count_in_cat(self, category):
+    def _badge_category_images(self, category):
         if not self.images.get(category):
-            return self.__send_error_badge(label=f"{category} — images", message="invalid category")
-        return self.__send_badge(label=f"{category} — images", message=len(self.images[category]))
+            return jsonify({
+                "label": f"{category} — images",
+                "message": "invalid category",
+                "color": "e05d44",
+                "logoSvg": self.BADGE_LOGO_SVG
+            })
+        return jsonify({
+            "label": f"{category} — images",
+            "message": str(len(self.images[category])),
+            "color": "e74c3c",
+            "logoSvg": self.BADGE_LOGO_SVG
+        })
+
+    def _old_badge_images(self):
+        return redirect(f'https://img.shields.io/endpoint?url={self.domain()}badge/v2/images', 301)
+
+    def _old_badge_categories(self):
+        return redirect(f'https://img.shields.io/endpoint?url={self.domain()}badge/v2/categories', 301)
+
+    def _old_badge_category_images(self, category):
+        return redirect(f'https://img.shields.io/endpoint?url={self.domain()}badge/v2/{category}/images', 301)

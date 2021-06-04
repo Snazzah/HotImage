@@ -158,46 +158,15 @@
 
         <table class="badge-table">
           <tbody>
-            <tr>
-              <td>Image Count:</td>
-              <td><img src="{{ domain }}badge/image_count?logo"></td>
-              <td><code>{{ domain }}badge/image_count</code></td>
-            </tr>
-            <tr>
-              <td>Category Count:</td>
-              <td><img src="{{ domain }}badge/category_count?logo"></td>
-              <td><code>{{ domain }}badge/category_count</code></td>
-            </tr>
-            <tr>
-              <td>Image Count in a Category:</td>
-              <td><img src="{{ domain }}badge/{{ random_cat }}/image_count?logo"></td>
-              <td><code>{{ domain }}badge/{{ random_cat }}/image_count</code></td>
-            </tr>
+            {% for item in badges %}
+              <tr>
+                <td>{{ item.title }}:</td>
+                <td><img src="https://img.shields.io/endpoint?url={{ domain }}badge/v2/{{ item.path }}"></td>
+                <td><a href="https://img.shields.io/endpoint?url={{ domain }}badge/v2/{{ item.path }}"><code>https://img.shields.io/endpoint?url={{ domain }}badge/v2/{{ item.path }}</code></a></td>
+              </tr>
+            {% endfor %}
           </tbody>
         </table>
-        <br><br>
-        <div class="table-container table-center">
-          <table>
-            <tbody>
-              <tr>
-                <td><code>?logo</code></td>
-                <td>Adds a logo to the front of the label.</td>
-              </tr>
-              <tr>
-                <td><code>?domain</code></td>
-                <td>Adds the host domain to the front of the label.</td>
-              </tr>
-              <tr>
-                <td><code>?style=flat</code></td>
-                <td>Sets the style of the badge. Available styles: flat, flat-square, for-the-badge, plastic, social</td>
-              </tr>
-              <tr>
-                <td><code>?color=f00</code></td>
-                <td>Overrides the badge color. Can use HEX codes and CSS names.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
     </section>
 
