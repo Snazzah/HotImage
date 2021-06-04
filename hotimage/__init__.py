@@ -11,7 +11,7 @@ from urllib.parse import urlencode as queryparse
 from urllib.parse import urlparse
 from .watcher import observe_images, observe_config
 
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 class HotImage:
     def __init__(self, config=None):
