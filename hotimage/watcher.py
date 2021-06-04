@@ -1,20 +1,42 @@
 import os
 import time
 import logging
+from threading import Timer
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 log = logging.getLogger(__name__)
+
+
+def debounce(wait):
+    """ Decorator that will postpone a functions
+        execution until after wait seconds
+        have elapsed since the last time it was invoked. """
+    def decorator(fn):
+        def debounced(*args, **kwargs):
+            def call_it():
+                fn(*args, **kwargs)
+            try:
+                debounced.t.cancel()
+            except(AttributeError):
+                pass
+            debounced.t = Timer(wait, call_it)
+            debounced.t.start()
+        return debounced
+    return decorator
+
 
 class ImageObserveEventHandler(FileSystemEventHandler):
     def __init__(self, instance, path):
         super(ImageObserveEventHandler, self).__init__()
         self._instance = instance
         self._path = path
+        self._actions_count = 0
+        self._waiting_to_reload = False
 
     def on_moved(self, event):
         if event.is_directory:
-            log.debug('%s was moved. Refreshing cache...', event.src_path)
-            self._instance._load_images()
+            log.debug('%s was moved.', event.src_path)
+            self._load_images()
 
     def on_created(self, event):
         category = os.path.relpath(event.src_path, self._path)
@@ -22,8 +44,8 @@ class ImageObserveEventHandler(FileSystemEventHandler):
         if not event.is_directory:
             category, filename = os.path.split(category)
 
-        log.debug('The folder (or a file in the folder) for the category %s was created. Refreshing cache...', category)
-        self._instance._load_images()
+        log.debug('The folder (or a file in the folder) for the category %s was created.', category)
+        self._load_images()
 
     def on_deleted(self, event):
         category = os.path.relpath(event.src_path, self._path)
@@ -31,8 +53,8 @@ class ImageObserveEventHandler(FileSystemEventHandler):
         if not event.is_directory:
             category, filename = os.path.split(category)
 
-        log.debug('The folder (or a file in the folder) for the category %s was deleted. Refreshing cache...', category)
-        self._instance._load_images()
+        log.debug('The folder (or a file in the folder) for the category %s was deleted.', category)
+        self._load_images()
 
     def on_modified(self, event):
         category = os.path.relpath(event.src_path, self._path)
@@ -40,8 +62,15 @@ class ImageObserveEventHandler(FileSystemEventHandler):
         if not event.is_directory:
             category, filename = os.path.split(category)
 
-        log.debug('The folder (or a file in the folder) for the category %s was modified. Refreshing cache...', category)
+        log.debug('The folder (or a file in the folder) for the category %s was modified.', category)
+        self._load_images()
+    
+    # A way of debouncing image changes
+    @debounce(5)
+    def _load_images(self):
+        log.info('Images changes finished. Refreshing cache...')
         self._instance._load_images()
+
 
 def observe_images(path, instance):
     observer = Observer()
@@ -77,7 +106,7 @@ class ConfigObserveEventHandler(FileSystemEventHandler):
             self._instance.config = self._instance._load_config()
             
             if not self._checking_filesize:
-                log.info('Detected change in config.json, Waiting for configuation to finish loading...')
+                log.info('Detected change in config.json, Waiting for configuration to finish loading...')
                 self._checking_filesize = True
                 file_size = -1
                 while file_size != os.path.getsize('./config.json'):
