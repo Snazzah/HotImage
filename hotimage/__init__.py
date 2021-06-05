@@ -193,7 +193,7 @@ class HotImage:
             "label": "version",
             "message": __version__,
             "color": "e74c3c",
-            "logoSvg": self.BADGE_LOGO_SVG
+            "logoSvg": self.BADGE_SVG
         })
 
     def _badge_images(self):
