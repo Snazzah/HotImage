@@ -186,8 +186,7 @@ class HotImage:
 
     # badges
 
-    BADGE_LOGO_SVG = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNiAzNiI PHBhdGggZmlsbD0iI0ZGRjUiIGQ9Ik0zMiAyOEg0VjRjMC0yLjIwOSAxLjc5MS00IDQtNGgyMGMyLjIwOSAwIDQgMS43OTEgNCA0djI0eiIvPjxwYXRoIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0iI0ZGRiIgZD0iTTggMzZoMjBjMi4yMDkgMCA0LTEuNzkxIDQtNHYtNGMtNC4xMTctMi43NDQtMjEuMTM5LTguMjMzLTI4IDB2NGMwIDIuMjA5IDEuNzkxIDQgNCA0eiIvPjxjaXJjbGUgZmlsbD0iI0ZGRiIgY3g9IjE1LjI3NiIgY3k9IjEyLjQ5NSIgcj0iNy41NzgiLz48L3N2Zz4="
-    BADGE_COLOR_LOGO_SVG = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNiAzNiI+PHBhdGggZmlsbD0iI0REMkU0NCIgZD0iTTMyIDI4SDRWNGMwLTIuMjA5IDEuNzkxLTQgNC00aDIwYzIuMjA5IDAgNCAxLjc5MSA0IDR2MjR6Ii8+PHBhdGggZD0iTTggMzZoMjBjMi4yMDkgMCA0LTEuNzkxIDQtNHYtNGMtNC4xMTctMi43NDQtMjEuMTM5LTguMjMzLTI4IDB2NGMwIDIuMjA5IDEuNzkxIDQgNCA0eiIvPjxjaXJjbGUgZmlsbD0iI0ZGRiIgY3g9IjE1LjI3NiIgY3k9IjEyLjQ5NSIgcj0iNy41NzgiLz48L3N2Zz4="
+    BADGE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#DD2E44" d="M32 28H4V4c0-2.209 1.791-4 4-4h20c2.209 0 4 1.791 4 4v24z"/><path d="M8 36h20c2.209 0 4-1.791 4-4v-4c-4.117-2.744-21.139-8.233-28 0v4c0 2.209 1.791 4 4 4z"/><circle fill="#FFF" cx="15.276" cy="12.495" r="7.578"/></svg>'
 
     def _badge_version(self):
         return jsonify({
@@ -199,33 +198,38 @@ class HotImage:
 
     def _badge_images(self):
         return jsonify({
+            "schemaVersion": 1,
             "label": "images",
             "message": str(self.image_count()),
             "color": "e74c3c",
-            "logoSvg": self.BADGE_LOGO_SVG
+            "logoSvg": self.BADGE_SVG
         })
 
     def _badge_categories(self):
         return jsonify({
+            "schemaVersion": 1,
             "label": "categories",
             "message": str(len(self.images)),
             "color": "e74c3c",
-            "logoSvg": self.BADGE_LOGO_SVG
+            "logoSvg": self.BADGE_SVG
         })
 
     def _badge_category_images(self, category):
         if not self.images.get(category):
             return jsonify({
+                "schemaVersion": 1,
+                "isError": True,
                 "label": f"{category} — images",
                 "message": "invalid category",
                 "color": "e05d44",
-                "logoSvg": self.BADGE_LOGO_SVG
+                "logoSvg": self.BADGE_SVG
             })
         return jsonify({
+            "schemaVersion": 1,
             "label": f"{category} — images",
             "message": str(len(self.images[category])),
             "color": "e74c3c",
-            "logoSvg": self.BADGE_LOGO_SVG
+            "logoSvg": self.BADGE_SVG
         })
 
     def _old_badge_images(self):
